@@ -14,3 +14,6 @@ CREATE TABLE `user` (
   UNIQUE KEY `USER_ID_UNIQUE` (`USER_ID`)
   
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;

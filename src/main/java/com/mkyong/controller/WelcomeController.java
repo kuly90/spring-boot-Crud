@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mkyong.model.User;
 import com.mkyong.repository.UserRepository;
+import com.mkyong.service.UserValidateService;
 
 
 
@@ -19,6 +20,9 @@ public class WelcomeController {
 	
 	@Autowired
 	UserRepository userRepo;
+	
+	@Autowired
+	UserValidateService userValidateService;
 
 	@RequestMapping("/")
 	public String welcome() {
@@ -46,14 +50,18 @@ public class WelcomeController {
 		String userId = request.getParameter("userId");
 		String name = request.getParameter("name");
 		int yearOld = Integer.parseInt(request.getParameter("yearOld"));
-				
-		User user = new User();
-		user.setUserId(userId);
-		user.setName(name);
-		user.setYearOld(yearOld);
-		userRepo.save(user);
 		
-		model.addAttribute("msg", message);
+		if(userValidateService.checkValidatUser(userId)) {
+			model.addAttribute("errUserId", "UserId has uesed, please try again.");
+		}else {
+			User user = new User();
+			user.setUserId(userId);
+			user.setName(name);
+			user.setYearOld(yearOld);
+			userRepo.save(user);
+			model.addAttribute("msg", message);
+		}
+				
 		return "addUser";
 	}
 	

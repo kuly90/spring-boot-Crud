@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Implementation-Title: Spring Boot Web JSP Example
 Implementation-Version: 1.0
-Built-By: Arch
+Built-By: Administrator
 Implementation-Vendor-Id: org.springframework.boot
 Build-Jdk: 1.8.0_181
 Implementation-URL: https://www.mkyong.com

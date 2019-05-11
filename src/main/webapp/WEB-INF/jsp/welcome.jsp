@@ -13,7 +13,7 @@
 </head>
 <jsp:include page="navbar.jsp"></jsp:include>
 <body>
-	
+	<h1>Hello Spring boot CRUD</h1>
 </body>
 
 </html>

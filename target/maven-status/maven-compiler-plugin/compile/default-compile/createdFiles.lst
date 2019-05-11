@@ -1,0 +1,5 @@
+com\arch\service\UserValidateService.class
+com\arch\SpringBootWebApplication.class
+com\arch\controller\WelcomeController.class
+com\arch\repository\UserRepository.class
+com\arch\model\User.class

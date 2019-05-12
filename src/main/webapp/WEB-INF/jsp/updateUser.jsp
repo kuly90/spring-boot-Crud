@@ -11,6 +11,9 @@
         <script src="${contextPath}/resources/js/bootstrap.min.js"></script>
         <script src="${contextPath}/resources/js/jquery-ui.js"></script>
 <title>Edit User</title>
+<style>
+	p{color:red;}
+</style>
 </head>
 <script>
     $( function() {
@@ -24,6 +27,7 @@
     <div class="container">
         <h2>Update User</h2>
         <p style="color: green;">${msg}</p>
+        <p>${msgErr}</p>
         <form:form modelAttribute="userEditForm" id="formEdit" method = "POST">
             <div class="form-group">
                 <label>User Id:</label>
@@ -60,11 +64,15 @@
              <button type="button" class="btn btn-danger">
                Cancel
              </button></a>
-            
+             <a onclick="clearInput('edit');"><button
+                type="button" class="btn btn-warning" id="btncancel">
+                Clear
+              </button></a>
               <button type="reset" class="btn btn-default" >
               Reset
              </button>
         </form:form>
+        <img src = "images/canhdiem.jpg" alt="user image"/>
     </div>
 </body>
 <script src="${contextPath}/resources/js/validate.js"></script>

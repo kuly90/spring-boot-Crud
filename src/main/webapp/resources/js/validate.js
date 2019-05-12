@@ -64,7 +64,7 @@ function checkValidateUser(action,form) {
         error = true;
     }else{
         if(!validateEmail(email)){
-            document.getElementById('errEmail').innerHTML = 'email invalidr.';
+            document.getElementById('errEmail').innerHTML = 'email invalid.';
             error = true;
         }else{
             document.getElementById('errEmail').innerHTML = '';
@@ -119,12 +119,20 @@ function confirmDel(userId, name,action) {
     }
 }
 
-function clearInput() {
-    document.getElementById('userId').value = '';
-    document.getElementById('name').value = '';
-    document.getElementById('phoneNumber').value = '';
-    document.getElementById('datepicker').value = '';
-    document.getElementById('email').value = '';
+function clearInput(type) {
+    if(type=='edit'){
+        document.getElementById('name').value = '';
+        document.getElementById('phoneNumber').value = '';
+        document.getElementById('datepicker').value = '';
+        document.getElementById('email').value = '';
+    }else{
+        document.getElementById('userId').value = '';
+        document.getElementById('name').value = '';
+        document.getElementById('phoneNumber').value = '';
+        document.getElementById('datepicker').value = '';
+        document.getElementById('email').value = '';
+    }
+    
 
 }
 

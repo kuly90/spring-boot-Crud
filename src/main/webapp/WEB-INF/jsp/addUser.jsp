@@ -68,7 +68,7 @@
                 Cancel
               </button></a>
                 <a onclick="clearInput();"><button
-                type="button" class="btn btn-default" id="btncancel">
+                type="button" class="btn btn-warning" id="btncancel">
                 Clear
               </button></a>
             </form:form>

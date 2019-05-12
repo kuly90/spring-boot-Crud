@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -76,11 +75,24 @@ public class WelcomeController {
     @RequestMapping("/saveUpdate")
     public String saveUpdate(Model model,HttpServletRequest request,  @ModelAttribute("userEditForm") User userEditForm) {
         String message = "Update user Success";
-        userRepo.save(userEditForm);
+        String messageErr = "Update Fail. No Item has Changed !";
         
-        model.addAttribute("msg", message);
+        User beforeEdit = userRepo.findByUserId(userEditForm.getUserId());
+
+        if(
+    		beforeEdit.getBirthday().equals(userEditForm.getBirthday()) &&
+    		beforeEdit.getEmail().equals(userEditForm.getEmail()) &&
+    		beforeEdit.getName().equals(userEditForm.getName()) &&
+    		beforeEdit.getPhoneNumber().equals(userEditForm.getPhoneNumber())
+    		){
+            model.addAttribute("msgErr", messageErr);
+        }else {
+            userRepo.save(userEditForm);
+            model.addAttribute("msg", message);
+        }
+        model.addAttribute("userEdit", userEditForm);
         
-        return "redirect:/userList";
+        return "updateUser";
     }
     
     @RequestMapping("/delete")

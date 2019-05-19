@@ -58,7 +58,6 @@
 </script>
 
 <body>
-    
     <div class="container">
         <jsp:include page="navbar.jsp"></jsp:include>
         <h2>ADD COUNTRY</h2>
@@ -82,11 +81,9 @@
 <script>
     function saveCountry(action){
         var form = document.getElementsByClassName('field_wrapper')[0];
-        var countryIdArr = [];
-        var countryNameArr = [];
         var check = false;
-        var countryIdNode = document.getElementsByName('countryId');
-        var arrayIdList = Array.prototype.slice.call(countryIdNode);
+
+        var arrayIdList = Array.prototype.slice.call(document.getElementsByName('countryId'));
         for(var i=0; i<arrayIdList.length; i++){
             if(arrayIdList[i].value == '' || arrayIdList[i].value.length == 0){
                 check = true;
@@ -94,10 +91,10 @@
             }
         }
         
-        var countryNameNode = document.getElementsByName('countryName');
-        var arrayNameList = Array.prototype.slice.call(countryNameNode);
+
+        var arrayNameList = Array.prototype.slice.call(document.getElementsByName('countryName'));
         for(var i=0; i<arrayNameList.length; i++){
-            if(arrayNameList[i].value == '' || arrayNameList[i].value.length == 0){
+            if(arrayNameList[i].value == '' || arrayNameList[i].value.length == 0 || check){
                 check = true;
                 break;
             }

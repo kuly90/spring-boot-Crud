@@ -20,9 +20,11 @@
 </script>
 <title>List User</title>
 </head>
-<jsp:include page="navbar.jsp"></jsp:include>
+
 <body>
+    
 	<div class="container">
+	<jsp:include page="navbar.jsp"></jsp:include>
 		<h2 style="text-align: center;">User List</h2>
 		<div id="search">
 			<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Enter Key Search..." title="Type in a name">

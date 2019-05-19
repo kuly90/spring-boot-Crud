@@ -7,6 +7,10 @@ function editUser(action) {
     var formEdit = document.getElementById('formEdit');
     checkValidateUser(action, formEdit);
 }
+function aa(a){
+	
+	var j = a;
+}
 
 function checkValidateUser(action,form) {
     var userId = document.getElementById('userId').value;

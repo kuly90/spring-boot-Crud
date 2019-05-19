@@ -22,9 +22,11 @@
             });
       });
 </script>
-<jsp:include page="navbar.jsp"></jsp:include>
+
 <body>
+	
     <div class="container">
+    <jsp:include page="navbar.jsp"></jsp:include>
         <h2>Update User</h2>
         <p style="color: green;">${msg}</p>
         <p>${msgErr}</p>

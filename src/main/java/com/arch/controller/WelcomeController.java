@@ -3,16 +3,20 @@ package com.arch.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.arch.model.Countries;
 import com.arch.model.User;
+import com.arch.repository.CountriesRepository;
 import com.arch.repository.UserRepository;
-import com.arch.service.UserValidateService;
+import com.arch.service.ValidateService;
 
 
 
@@ -23,10 +27,15 @@ public class WelcomeController {
     UserRepository userRepo;
     
     @Autowired
-    UserValidateService userValidateService;
+    CountriesRepository countryRepo;
+    
+    @Autowired
+    ValidateService validateService;
 
     @RequestMapping("/")
-    public String welcome() {
+    public String welcome(HttpSession session) {
+        
+        session.setAttribute("ly","kuly");
         
         return "welcome";
     }
@@ -45,13 +54,44 @@ public class WelcomeController {
         return "addUser";
     }
     
+    @RequestMapping("/addCountry")
+    public String addCountry() {
+            
+        return "addCountry";
+    }
+    
+    @RequestMapping("/saveCountry")
+    public String saveCountry(Model model,@RequestParam(value="countryId") List<String> listCountryId,
+            @RequestParam(value="countryName") List<String> listCountryName) {
+        
+        boolean err = false;
+        for(int i=0; i <listCountryId.size();i++ ) {
+            if(validateService.checkValidatCountry(listCountryId.get(i))) {
+                model.addAttribute("errMsg","Country is exists, try again!");
+                err = true;
+                break;
+            }else {
+                Countries country = new Countries();
+                country.setCountryId(listCountryId.get(i));
+                country.setCountryName(listCountryName.get(i));
+                countryRepo.save(country);
+            }
+            
+        }
+        if(!err) {
+            model.addAttribute("msg", "Add Country Success!");
+        }
+        
+        return "addCountry";
+    }
+    
     @RequestMapping("/save")
     public String save(Model model,HttpServletRequest request, @ModelAttribute("userForm") User userForm) {
         String message = "Add user Success !";
         String messageErr = "UserId has uesed, please try again.";
         String addFail= "Add User fail !";
         
-        if(userValidateService.checkValidatUser(userForm.getUserId())) {
+        if(validateService.checkValidatUser(userForm.getUserId())) {
             model.addAttribute("errUserId", messageErr);
             model.addAttribute("userForm", userForm);
             model.addAttribute("addFail", addFail);
@@ -80,11 +120,11 @@ public class WelcomeController {
         User beforeEdit = userRepo.findByUserId(userEditForm.getUserId());
 
         if(
-    		beforeEdit.getBirthday().equals(userEditForm.getBirthday()) &&
-    		beforeEdit.getEmail().equals(userEditForm.getEmail()) &&
-    		beforeEdit.getName().equals(userEditForm.getName()) &&
-    		beforeEdit.getPhoneNumber().equals(userEditForm.getPhoneNumber())
-    		){
+            beforeEdit.getBirthday().equals(userEditForm.getBirthday()) &&
+            beforeEdit.getEmail().equals(userEditForm.getEmail()) &&
+            beforeEdit.getName().equals(userEditForm.getName()) &&
+            beforeEdit.getPhoneNumber().equals(userEditForm.getPhoneNumber())
+            ){
             model.addAttribute("msgErr", messageErr);
         }else {
             userRepo.save(userEditForm);

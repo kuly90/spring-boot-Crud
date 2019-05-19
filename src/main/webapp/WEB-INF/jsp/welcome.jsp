@@ -9,11 +9,15 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="${contextPath}/resources/js/bootstrap.min.js"></script>
+<script src="${contextPath}/resources/js/validate.js"></script>
 <title>Home Page</title>
 </head>
-<jsp:include page="navbar.jsp"></jsp:include>
+
 <body>
-	<h1>Hello Spring boot CRUD</h1>
+	<div class="container">
+		<jsp:include page="navbar.jsp"></jsp:include>
+		<h1>Hello Spring boot CRUD</h1>
+	</div>	
 </body>
 
 </html>

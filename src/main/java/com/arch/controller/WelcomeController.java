@@ -67,7 +67,7 @@ public class WelcomeController {
         boolean err = false;
         for(int i=0; i <listCountryId.size();i++ ) {
             if(validateService.checkValidatCountry(listCountryId.get(i))) {
-                model.addAttribute("errMsg","Country is exists, try again!");
+                model.addAttribute("errMsg","Country has country Id is " + "'" +listCountryId.get(i) +"'" + " already exists, try again!");
                 err = true;
                 break;
             }else {

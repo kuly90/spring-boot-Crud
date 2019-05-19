@@ -65,35 +65,33 @@
         <p id="errMsg" style="color:red;">${errMsg}</p>
         <p style="color:green">${msg}</p>
         <form class="field_wrapper" method = "POST">
-	        <div>
-	            <input type="text" name="countryId" placeholder="enter country id"/>
-	            <input type="text" name="countryName" placeholder="enter country name"/>
-	        </div>
+            <div>
+                <input type="text" name="countryId" placeholder="enter country id"/>
+                <input type="text" name="countryName" placeholder="enter country name"/>
+            </div>
         </form>
         <a class="add_button" title="Add field">
             <button class="btn btn-primary btnAdd"><span>+</span></button>
         </a>
-        <a onclick="addUser();">
+        <c:url var = "action" value="/saveCountry"/>
+        <a onclick="saveCountry('${action}');">
             <button class="btn btn-primary ">Submit</button>
         </a>
     </div>
 </body>
 <script>
-    function addUser(){
-    	var form = document.getElementsByClassName('field_wrapper')[0];
+    function saveCountry(action){
+        var form = document.getElementsByClassName('field_wrapper')[0];
         var countryIdArr = [];
         var countryNameArr = [];
-        //var url = '/saveCountry?countryId=';
-        //var url1 = '';
-        //var url2 ='';
         var check = false;
         var countryIdNode = document.getElementsByName('countryId');
         var arrayIdList = Array.prototype.slice.call(countryIdNode);
         for(var i=0; i<arrayIdList.length; i++){
             if(arrayIdList[i].value == '' || arrayIdList[i].value.length == 0){
                 check = true;
+                break;
             }
-            //url1 = url1 + arrayIdList[i].value + ',';
         }
         
         var countryNameNode = document.getElementsByName('countryName');
@@ -101,14 +99,12 @@
         for(var i=0; i<arrayNameList.length; i++){
             if(arrayNameList[i].value == '' || arrayNameList[i].value.length == 0){
                 check = true;
+                break;
             }
-            //url2 = url2 + arrayNameList[i].value + ',';
         }
         if(!check){
-            //url = url + url1.substring(0,url1.length-1) + '&countryName=' + url2.substring(0,url2.length-1);
-            form.action = '/saveCountry';
+            form.action = action;
             form.submit();
-            //window.location.href = url;
         }else{
             document.getElementById('errMsg').innerHTML = 'Field must not be Empty, Try again!'
         }

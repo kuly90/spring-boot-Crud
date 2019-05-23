@@ -11,6 +11,7 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'>
     <script src="${contextPath}/resources/js/jquery-1.11.2.min.js"></script>
     <script src="${contextPath}/resources/js/bootstrap.min.js"></script>
     <style>
@@ -25,7 +26,27 @@
             font-size:180%;
             font-weight:bold;
         }
-  </style>
+        #list1, #list2 {
+            border:1px solid black;
+            height: 15em;
+            background-color:silver;
+        }
+        #btn-move{
+            padding-top:6%;
+            padding-left:2.4%;
+        }
+        #btn-move .btn{
+            margin:5%;
+        }
+        .divChoose1,.divChoose2{
+            background-color:orange;
+        }
+        h6{
+            border-bottom: 1px dotted black;
+            text-align: center;
+            margin-bottom: 2%;
+        }
+    </style>
 </head>
 <script type="text/javascript">
     $(document).ready(function(){
@@ -59,30 +80,60 @@
 
 <body>
     <div class="container">
-        <jsp:include page="navbar.jsp"></jsp:include>
-        <h2>ADD COUNTRY</h2>
-        <p id="errMsg" style="color:red;">${errMsg}</p>
-        <p style="color:green">${msg}</p>
-        <form class="field_wrapper" method = "POST">
-            <div>
-                <input type="text" name="countryId" placeholder="enter country id"/>
-                <input type="text" name="countryName" placeholder="enter country name"/>
+        <div>
+            <jsp:include page="navbar.jsp"></jsp:include>
+            <h2>ADD COUNTRY</h2>
+            <p id="errMsg" style="color:red;">${errMsg}</p>
+            <p style="color:green">${msg}</p>
+            <form class="field_wrapper" method = "POST">
+                <div>
+                    <input type="text" name="countryId" placeholder="enter country id"/>
+                    <input type="text" name="countryName" placeholder="enter country name"/>
+                </div>
+            </form>
+            
+            <c:url var = "action" value="/saveCountry"/>
+            <a onclick="saveCountry('${action}');" style="margin-left: 1%">
+                <button class="btn btn-primary ">Submit</button>
+            </a>
+            <a class="add_button" title="Add field" style="margin-left: 28%;">
+                <button class="btn btn-primary btnAdd"><span>+</span></button>
+            </a>
+        </div><br/>
+        <div id="movelist" class="row">
+            <div id="list1" class="col-md-2">
+                <h6>List Country</h6>
+                <c:forEach var="item" items="${listCountry}">
+                    <div>
+                        <input type="hidden" value="${item.countryId}"/>
+                        <p>${item.countryName}</p>
+                    </div>
+                </c:forEach>
             </div>
-        </form>
-        <a class="add_button" title="Add field">
-            <button class="btn btn-primary btnAdd"><span>+</span></button>
-        </a>
-        <c:url var = "action" value="/saveCountry"/>
-        <a onclick="saveCountry('${action}');">
-            <button class="btn btn-primary ">Submit</button>
-        </a>
+            <div id="btn-move" class="col-md-1">
+            <c:url var="area1" value=".divChoose1"/>
+                <a onclick="moveItem('${area1}')"><button class="btn"><i class='fas fa-angle-double-right'></i></button></a><br/>
+                <c:url var="area2" value=".divChoose2"/>
+                <a onclick="moveItem('${area2}')"><button class="btn"><i class='fas fa-angle-double-left'></i></button></a>
+            </div>
+            <div id="list2" class="col-md-2">
+                <h6>Delete</h6>
+                <form id="formDel" method='POST' action="delCountry">
+                </form>
+            </div>
+        </div>
+        <br/>
+        <div class="row" style="position: relative;">
+            <input style="position: absolute; left: 35%;" type ="button" value="Delete" class="btn btn-danger" onclick="delCountry()"/>
+        </div>
     </div>
+    
+    
 </body>
 <script>
     function saveCountry(action){
         var form = document.getElementsByClassName('field_wrapper')[0];
         var check = false;
-
         var arrayIdList = Array.prototype.slice.call(document.getElementsByName('countryId'));
         for(var i=0; i<arrayIdList.length; i++){
             if(arrayIdList[i].value == '' || arrayIdList[i].value.length == 0){
@@ -90,8 +141,6 @@
                 break;
             }
         }
-        
-
         var arrayNameList = Array.prototype.slice.call(document.getElementsByName('countryName'));
         for(var i=0; i<arrayNameList.length; i++){
             if(arrayNameList[i].value == '' || arrayNameList[i].value.length == 0 || check){
@@ -105,7 +154,37 @@
         }else{
             document.getElementById('errMsg').innerHTML = 'Field must not be Empty, Try again!'
         }
-        
     }
+</script>
+<script>
+    
+    $(document).ready(function() {
+        $('#list1').on( 'click', 'div', function () {
+            $(this).toggleClass('divChoose1');
+        } );
+        
+        $('#list2').on( 'click', 'div', function () {
+            $(this).toggleClass('divChoose2');
+        });
+    });
+        
+    function moveItem(area){
+        var div = $(area);
+        for(var i = div.length - 1; i >= 0; i--){
+            var countryId = div[i].getElementsByTagName('input')[0].value;
+            var countryName = div[i].getElementsByTagName('p')[0].innerHTML;
+            if(area == '.divChoose1'){
+                var newDiv = '<div> <input class="countryId" type="hidden" value="' + countryId + '" />'
+                           + '<p>' + countryName + '</p> </div>';
+                $('#formDel').append(newDiv);
+                $(area)[i].remove();
+            }else if(area == '.divChoose2'){
+                var newDiv = '<div> <input type="hidden" value="' + countryId + '" />'
+                           + '<p>' + countryName + '</p> </div>';
+                $('#list1').append(newDiv);
+                $(area)[i].remove();
+            }
+        }
+    }    
 </script>
 </html>

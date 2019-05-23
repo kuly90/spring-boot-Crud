@@ -55,8 +55,9 @@ public class WelcomeController {
     }
     
     @RequestMapping("/addCountry")
-    public String addCountry() {
-            
+    public String addCountry(Model model) {
+            List<Countries> listCountry = (List<Countries>) countryRepo.findAll();
+            model.addAttribute("listCountry", listCountry);
         return "addCountry";
     }
     
@@ -82,7 +83,7 @@ public class WelcomeController {
             model.addAttribute("msg", "Add Country Success!");
         }
         
-        return "addCountry";
+        return "redirect:/addCountry";
     }
     
     @RequestMapping("/save")

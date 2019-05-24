@@ -103,6 +103,9 @@
                     <button class="btn btn-primary btnAdd"><span>+</span></button>
                 </a>
             </div><br/>
+            <div>
+                <p id="errDel" style="margin-left: 25%;color: red;"></p>
+            </div>
             <div id="movelist" class="row">
                 <div id="list1" class="col-md-2">
                     <h6>List Country</h6>
@@ -123,6 +126,7 @@
                     <h6>Delete</h6>
                     <form id="formDel" method='POST' action="/delCountry">
                     </form>
+                    
                 </div>
             </div>
             <br/>
@@ -187,10 +191,29 @@
                  }
              }
          }    
-    
+
          function delCountry(){
-             var formDel = document.getElementById('formDel');
-             formDel.submit();
+             var listNode = document.getElementsByName('countryId');
+             var listArr = Array.prototype.slice.call(listNode);
+             var err = false;
+             if(listArr.length > 0){
+                 for(var i = 0; i < listArr.length; i++){
+                    var child = listArr[i].value;
+                     if(!child){
+                         err = true;
+                     }else{
+                         err = false;
+                     }
+                 }
+             }else{
+                 document.getElementById('errDel').innerHTML = 'No item choosed to delete!';
+             }
+             if(err){
+                 document.getElementById('errDel').innerHTML = 'No item choosed to delete!';
+             }else{
+                 var formDel = document.getElementById('formDel');
+                 formDel.submit();
+             }
          }
     </script>
 </html>

@@ -19,7 +19,7 @@ import com.arch.repository.UserRepository;
 import com.arch.service.ValidateService;
 
 @Controller
-public class WelcomeController {
+public class MainController {
     
     @Autowired
     UserRepository userRepo;
@@ -71,7 +71,7 @@ public class WelcomeController {
                 break;
             }else {
                 Countries country = new Countries();
-                country.setCountryId(listCountryId.get(i));
+                country.setCountryId(listCountryId.get(i).trim());
                 country.setCountryName(listCountryName.get(i));
                 countryRepo.save(country);
             }

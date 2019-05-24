@@ -18,8 +18,6 @@ import com.arch.repository.CountriesRepository;
 import com.arch.repository.UserRepository;
 import com.arch.service.ValidateService;
 
-
-
 @Controller
 public class WelcomeController {
     
@@ -86,6 +84,16 @@ public class WelcomeController {
         return "redirect:/addCountry";
     }
     
+    @RequestMapping("/delCountry")
+    public String delCountry(@RequestParam(value="countryId") List<String> listCountryId) {
+            
+        for(int i =0; i < listCountryId.size(); i++) {
+            countryRepo.delete(listCountryId.get(i));
+        }
+            
+        return "redirect:/addCountry";
+    }
+    
     @RequestMapping("/save")
     public String save(Model model,HttpServletRequest request, @ModelAttribute("userForm") User userForm) {
         String message = "Add user Success !";
@@ -100,7 +108,6 @@ public class WelcomeController {
             userRepo.save(userForm);
             model.addAttribute("msg", message);
         }
-                
         return "addUser";
     }
     

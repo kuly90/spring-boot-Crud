@@ -15,7 +15,6 @@
             p{
                 color: red;
             }
-            
         </style>
     </head>
     <script>
@@ -27,7 +26,6 @@
     </script>
     
     <body>
-
         <div class="container">
             <jsp:include page="navbar.jsp"></jsp:include>
             <h2>Add User</h2>
@@ -74,9 +72,7 @@
                 Clear
               </button></a>
             </form:form>
-    
         </div>
     </body>
     <script src="${contextPath}/resources/js/validate.js"></script>
-        
 </html>

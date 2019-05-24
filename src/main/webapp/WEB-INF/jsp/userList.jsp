@@ -31,12 +31,19 @@
             <table class="table" id="myTable">
                 <thead>
                     <tr>
-                        <th>User Id</th>
-                        <th>Name 
+                        <th>User Id
+                            <c:url var="position0" value="0"/>
                             <c:url var="sort1" value="asc"/>
-                            <button class="btn-secondary" type="button" onclick="sortName('${sort1}')"><span class="fas fa-angle-up"></span></button>
+                            <button type="button" onclick="sortName('${sort1}','${position0}')"><span class="fas fa-angle-up"></span></button>
                             <c:url var="sort2" value="desc"/>
-                            <button class="btn-secondary" type="button" onclick="sortName('${sort2}')"><span class="fas fa-angle-down"></span></button>
+                            <button type="button" onclick="sortName('${sort2}','${position0}')"><span class="fas fa-angle-down"></span></button>
+                        </th>
+                        <th>Name 
+                            <c:url var="position1" value="1"/>
+                            <c:url var="sort1" value="asc"/>
+                            <button type="button" onclick="sortName('${sort1}','${position1}')"><span class="fas fa-angle-up"></span></button>
+                            <c:url var="sort2" value="desc"/>
+                            <button type="button" onclick="sortName('${sort2}','${position1}')"><span class="fas fa-angle-down"></span></button>
                         </th>
                         <th>Phone Number</th>
                         <th>Email Address</th>
@@ -72,17 +79,17 @@
         </div>
         <script src="${contextPath}/resources/js/validate.js"></script>
         <script type="text/javascript">
-            function sortName(typeSort){
+            function sortName(typeSort, position){
                 var table, rows, switching, i, x, y, shouldSwitch;
-                  table = document.getElementById("myTable");
-                  switching = true;
-                  while (switching) {
+                table = document.getElementById("myTable");
+                switching = true;
+                while (switching) {
                     switching = false;
                     rows = table.rows;
                     for (i = 1; i < (rows.length - 1); i++) {
                       shouldSwitch = false;
-                      x = rows[i].getElementsByTagName("TD")[1];
-                      y = rows[i + 1].getElementsByTagName("TD")[1];
+                      x = rows[i].getElementsByTagName("TD")[position];
+                      y = rows[i + 1].getElementsByTagName("TD")[position];
                       
                       if(typeSort == 'asc'){
                           if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
@@ -97,10 +104,10 @@
                       }
                     }
                     if (shouldSwitch) {
-                      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                      switching = true;
+                     rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                     switching = true;
                     }
-                  }
+                }
             }
         </script>
     </body>

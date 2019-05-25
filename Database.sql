@@ -12,6 +12,8 @@ CREATE TABLE `user` (
   `PHONE_NUMBER` int(11) NOT NULL,
   `EMAIL` VARCHAR(100) NOT NULL,
   `BIRTHDAY` CHAR(10) NOT NULL,
+  `PASSWORD` VARCHAR(100) NOT NULL,
+  `ISLOGIN` CHAR(1) NOT NULL,
   UNIQUE KEY `USER_ID_UNIQUE` (`USER_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -26,3 +28,6 @@ CREATE TABLE `countries` (
   UNIQUE KEY `COUNTRY_ID_UNIQUE` (`COUNTRY_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+
+INSERT INTO `usermanager`.`user` (`USER_ID`, `NAME`, `PHONE_NUMBER`, `EMAIL`, `BIRTHDAY`, `PASSWORD`, `ISLOGIN`) VALUES
+								('ARCH0001', 'AnhLy', '973560620', 'ly@gmail.com', '1990-01-01', '123456', '0');

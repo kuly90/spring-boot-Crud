@@ -31,11 +31,36 @@ public class MainController {
     ValidateService validateService;
 
     @RequestMapping("/")
-    public String welcome(HttpSession session) {
-        
-        session.setAttribute("ly","kuly");
-        
-        return "welcome";
+    public String welcome() {
+                
+        return "login";
+    }
+    
+    @RequestMapping("/login")
+    public String login(Model model, @ModelAttribute("userForm") User userForm) {
+        User userLogin = userRepo.findOne(userForm.getUserId());
+        String returnVal = "";
+        if(userLogin == null) {
+        	model.addAttribute("loginFail", "Logn Fail, User Invalid, try again!");
+        	model.addAttribute("userForm", userForm);
+        	returnVal = "login";
+        }else {
+        	if(userForm.getPassword().equals(userLogin.getPassword())){
+        		if(userLogin.getIsLogin().equals("0")) {
+            		userLogin.setIsLoin("1");
+                	userRepo.save(userLogin);
+                	returnVal = "homePage";
+            	}else{
+            		model.addAttribute("loginFail", "Login Fail, User is logined another window!");
+            		returnVal = "login";
+            	}
+        	}else {
+        		model.addAttribute("loginFail", "Logn Fail, password Invalid, try again!");
+        		returnVal = "login";
+        	}
+	
+        }
+        return returnVal;
     }
     
     @RequestMapping("/userList")
@@ -105,6 +130,8 @@ public class MainController {
             model.addAttribute("userForm", userForm);
             model.addAttribute("addFail", addFail);
         }else {
+        	userForm.setPassword("123456");
+        	userForm.setIsLoin("0");
             userRepo.save(userForm);
             model.addAttribute("msg", message);
         }

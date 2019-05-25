@@ -7,11 +7,6 @@ function editUser(action) {
     var formEdit = document.getElementById('formEdit');
     checkValidateUser(action, formEdit);
 }
-function aa(a){
-	
-	var j = a;
-}
-
 function checkValidateUser(action,form) {
     var userId = document.getElementById('userId').value;
     var name = document.getElementById('name').value;
@@ -136,7 +131,37 @@ function clearInput(type) {
         document.getElementById('datepicker').value = '';
         document.getElementById('email').value = '';
     }
-    
-
 }
 
+function showPassword(){
+    var checkBox = document.getElementById('myCheck');
+    if(checkBox.checked){
+        document.getElementById('password').setAttribute('type','text');
+    }else{
+        document.getElementById('password').setAttribute('type','password');
+    }
+}
+
+function login(){
+    var userId = document.getElementById('userId').value;
+    var password = document.getElementById('password').value;
+    var error = false;
+
+    if(!userId){
+        document.getElementById('errUserId').innerHTML = 'userIs is empty!';
+        error = true;
+    }else{
+        document.getElementById('errUserId').innerHTML = '';
+    }
+
+    if(!password){
+        document.getElementById('errPassword').innerHTML = 'password is empty!';
+        error = true;
+    }else{
+        document.getElementById('errPassword').innerHTML='';
+    }
+    if(!error){
+        var formLogin = document.getElementById('formLogin');
+        formLogin.submit();
+    }
+}

@@ -9,85 +9,93 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
-public class User implements Serializable{
-    private static final long serialVersionUID = 1L;
-    
-    @Id
-    @Column(name = "USER_ID")
-    private String userId;
-    
-    @Column(name = "NAME")
-    private String name;
-    
-    @Column(name = "EMAIL")
-    private String email;
-    
-    @Column(name = "BIRTHDAY")
-    private String birthday;
-    
-    @Column(name = "PHONE_NUMBER")
-    private String phoneNumber;
-    
-    public User() {
-        
-    }
+public class User implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    public String getEmail() {
-        return email;
-    }
+	@Id
+	@Column(name = "USER_ID")
+	private String userId;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	@Column(name = "NAME")
+	private String name;
 
-    public String getBirthday() {
-        return birthday;
-    }
+	@Column(name = "EMAIL")
+	private String email;
 
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
+	@Column(name = "BIRTHDAY")
+	private String birthday;
 
+	@Column(name = "PHONE_NUMBER")
+	private String phoneNumber;
 
+	@Column(name = "PASSWORD")
+	private String password;
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+	@Column(name = "ISLOGIN")
+	private String isLogin;
 
+	public String getPassword() {
+		return password;
+	}
 
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+	public String getIsLogin() {
+		return isLogin;
+	}
 
+	public void setIsLoin(String isLogin) {
+		this.isLogin = isLogin;
+	}
 
+	public String getEmail() {
+		return email;
+	}
 
-    public String getUserId() {
-        return userId;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+	public String getBirthday() {
+		return birthday;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 
-    public String getphoneNumber() {
-        return phoneNumber;
-    }
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 
-    public void setphoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+	public String getUserId() {
+		return userId;
+	}
 
-    
-    
-    
-    
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getphoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setphoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
 }

@@ -62,7 +62,6 @@
                           +'<button class="btn btn-danger btnRemove"><span>x</span></button>'
                           +'</a></div>'; 
             var x = 1;
-            
             $(addButton).click(function(){
                 if(x < maxField){ 
                     x++;
@@ -77,14 +76,15 @@
             });
         });
     </script>
-    
+
     <body>
         <div class="container">
             <div>
                 <jsp:include page="navbar.jsp"></jsp:include>
                 <h2>ADD COUNTRY</h2>
                 <p id="errMsg" style="color:red;">${errMsg}</p>
-                <p style="color:green">${msg}</p>
+                <p id="errMsgSame" style="color:red;"></p>
+                <p id="succMsg" style="color:green"></p>
                 <form class="field_wrapper" method = "POST">
                     <div>
                         <input type="text" name="countryId" placeholder="enter country id"/>
@@ -114,51 +114,28 @@
                     </c:forEach>
                 </div>
                 <div id="btn-move" class="col-md-1">
-                <c:url var="area1" value=".divChoose1"/>
+                    <c:url var="area1" value=".divChoose1"/>
                     <a onclick="moveItem('${area1}')"><button class="btn"><i class='fas fa-angle-double-right'></i></button></a><br/>
                     <c:url var="area2" value=".divChoose2"/>
                     <a onclick="moveItem('${area2}')"><button class="btn"><i class='fas fa-angle-double-left'></i></button></a>
                 </div>
                 <div id="list2" class="col-md-2">
                     <h6>Delete</h6>
-                    <form id="formDel" method='POST' action="/delCountry">
+                    <form class="formDel">
                     </form>
                     
                 </div>
             </div>
             <br/>
             <div class="row" style="position: relative;">
-                <input style="position: absolute; left: 35%;" type ="button" value="Delete" class="btn btn-danger" onclick="delCountry()"/>
+                <input type ="button" 
+                    value="Revert" class="btn btn-warning" onclick="revert()"/>
+                <input style="position: absolute; left: 35%;" type ="button" 
+                    value="Delete" class="btn btn-danger" onclick="delCountry()"/>
             </div>
         </div>
-        
     </body>
-    <script>
-        function saveCountry(action){
-            var form = document.getElementsByClassName('field_wrapper')[0];
-            var check = false;
-            var arrayIdList = Array.prototype.slice.call(document.getElementsByName('countryId'));
-            for(var i=0; i<arrayIdList.length; i++){
-                if(arrayIdList[i].value == '' || arrayIdList[i].value.length == 0){
-                    check = true;
-                    break;
-                }
-            }
-            var arrayNameList = Array.prototype.slice.call(document.getElementsByName('countryName'));
-            for(var i=0; i<arrayNameList.length; i++){
-                if(arrayNameList[i].value == '' || arrayNameList[i].value.length == 0 || check){
-                    check = true;
-                    break;
-                }
-            }
-            if(!check){
-                form.action = action;
-                form.submit();
-            }else{
-                document.getElementById('errMsg').innerHTML = 'Field must not be Empty, Try again!'
-            }
-        }
-    </script>
+    <script src="${contextPath}/resources/js/validate.js"></script>
     <script>
         $(document).ready(function() {
              $('#list1').on( 'click', 'div', function () {
@@ -169,7 +146,7 @@
                  $(this).toggleClass('divChoose2');
              });
          });
-             
+
          function moveItem(area){
              var div = $(area);
              for(var i = div.length - 1; i >= 0; i--){
@@ -178,7 +155,7 @@
                  if(area == '.divChoose1'){
                      var newDiv = '<div> <input name="countryId" type="hidden" value="' + countryId + '" />'
                                 + '<p>' + countryName + '</p> </div>';
-                     $('#formDel').append(newDiv);
+                     $('.formDel').append(newDiv);
                      $(area)[i].remove();
                  }else if(area == '.divChoose2'){
                      var newDiv = '<div> <input type="hidden" value="' + countryId + '" />'
@@ -189,28 +166,109 @@
              }
          }    
 
+         function revert() {
+            window.location.reload();
+        }
+
+         function saveCountry(action){
+             var check = false;
+             var checkSame = false;
+             var arrayIdList = Array.prototype.slice.call(document.getElementsByName('countryId'));
+             var arrayIdPresent = Array.prototype.slice.call($('#list1 input'));
+             for(var i=0; i<arrayIdList.length; i++){
+                 if(arrayIdList[i].value == '' || arrayIdList[i].value.length == 0){
+                     check = true;
+                     break;
+                 }
+                 for(var j =0; j < arrayIdPresent.length; j++){
+                     if(arrayIdList[i].value == arrayIdPresent[j].value){
+                         checkSame = true;
+                         document.getElementById('errMsgSame').innerHTML = arrayIdList[i].value + ' has already exists, try again!';
+                        break;
+                     }
+                 }
+             }
+             var arrayNameList = Array.prototype.slice.call(document.getElementsByName('countryName'));
+             for(var i=0; i<arrayNameList.length; i++){
+                 if(arrayNameList[i].value == '' || arrayNameList[i].value.length == 0 || check ){
+                     check = true;
+                     break;
+                 }
+             }
+             if(!check && !checkSame){
+                 var data = $('.field_wrapper');
+                 ajaxPost(action,data);
+                 document.getElementById('succMsg').innerHTML = 'Add Country success!';
+                 document.getElementById('errMsg').innerHTML = '';
+                 document.getElementById('errMsgSame').innerHTML = '';
+             }else if(check){
+                 document.getElementById('errMsg').innerHTML = 'Field must not be Empty, Try again!';
+                 document.getElementById('errMsgSame').innerHTML = '';
+             }else if(checkSame){
+                 document.getElementById('errMsg').innerHTML = '';
+             }
+         }
+
          function delCountry(){
              var listNode = document.getElementsByName('countryId');
              var listArr = Array.prototype.slice.call(listNode);
-             var err = false;
+             var url = "/delCountry?countryId=";
+             var err1 = false;
+             var err2 = true;
              if(listArr.length > 0){
                  for(var i = 0; i < listArr.length; i++){
                     var child = listArr[i].value;
-                     if(!child){
-                         err = true;
+                     if(child == '' || child.length == 0 || child == 'undefined'){
+                         err1 = true;
                      }else{
-                         err = false;
+                         err2 = false;
+                         url += child + ',';
                      }
                  }
              }else{
                  document.getElementById('errDel').innerHTML = 'No item choosed to delete!';
              }
-             if(err){
+             if(err1 && err2){
                  document.getElementById('errDel').innerHTML = 'No item choosed to delete!';
-             }else{
-                 var formDel = document.getElementById('formDel');
-                 formDel.submit();
+             }else if(!err2){
+                 document.getElementById('errDel').innerHTML = '';
+                 document.getElementById('errMsg').innerHTML = '';
+                 document.getElementById('errMsgSame').innerHTML = '';
+                 document.getElementById('succMsg').innerHTML = '';
+                 ajaxDel(url.substring(0,url.length - 1));
              }
          }
+
+         function ajaxPost(action,data) {
+             $.ajax({
+                 type: 'post',
+                 url: action,
+                 data: data.serialize(),
+                 success: function (res) {
+                     var divChild = '';
+                     $.each(res, function (id, name) {
+                         divChild += '<div><input type="hidden" value="' +id.countryId +'"/>'
+                             +'<p>'+name.countryName+'</p></div>';
+                     });
+                     $('#list1').html(divChild);
+                 },
+                 error: function() {
+                     alert('Error while request');
+                 }
+             });
+        }
+
+        function ajaxDel(url) {
+            $.ajax({
+                type: 'post',
+                url: url,
+                success: function (res) {
+                    $('.formDel').children('div').remove();
+                },
+                error: function() {
+                    alert('Error while request');
+                }
+            });
+        }
     </script>
 </html>

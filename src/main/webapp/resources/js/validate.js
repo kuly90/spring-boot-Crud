@@ -165,3 +165,40 @@ function login(){
         formLogin.submit();
     }
 }
+
+//$(window).on('unload', function() {
+//
+//    var URL = "/logOut";
+//    navigator.sendBeacon(URL, "");
+//
+//});
+//$(window).on('mouseover', (function ()
+//    {
+//        window.onbeforeunload = null;
+//    }));
+//
+//    $(window).on('mouseout', (function ()
+//    {
+//         window.onbeforeunload = leave();
+//    }));
+//
+//    function leave()
+//    {
+//    	var URL = "/logOut";
+//    	window.location.href = URL;
+//    }
+//
+//window.onload = function detectRefresh(){
+//	 try
+//	 {
+//	   if(window.opener.title == undefined){
+//	 isRefresh = true;
+//	 document.write('Window was refreshed!');
+//	   }
+//	 }
+//	 catch(err)
+//	 {
+//	 isRefresh = false;
+//	 document.write('Window was closed!');
+//	 } 
+//	 }

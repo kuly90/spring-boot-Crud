@@ -20,7 +20,6 @@
         </script>
         <title>List User</title>
     </head>
-    
     <body>
         <div class="container">
             <jsp:include page="navbar.jsp"></jsp:include>

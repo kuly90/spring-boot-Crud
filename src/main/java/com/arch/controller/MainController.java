@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.arch.model.Countries;
 import com.arch.model.User;
@@ -37,30 +38,42 @@ public class MainController {
     }
     
     @RequestMapping("/login")
-    public String login(Model model, @ModelAttribute("userForm") User userForm) {
+    public String login(Model model,HttpSession session, @ModelAttribute("userForm") User userForm) {
         User userLogin = userRepo.findOne(userForm.getUserId());
         String returnVal = "";
         if(userLogin == null) {
-        	model.addAttribute("loginFail", "Logn Fail, User Invalid, try again!");
-        	model.addAttribute("userForm", userForm);
-        	returnVal = "login";
+            model.addAttribute("loginFail", "Logn Fail, User Invalid, try again!");
+            model.addAttribute("userForm", userForm);
+            returnVal = "login";
         }else {
-        	if(userForm.getPassword().equals(userLogin.getPassword())){
-        		if(userLogin.getIsLogin().equals("0")) {
-            		userLogin.setIsLoin("1");
-                	userRepo.save(userLogin);
-                	returnVal = "homePage";
-            	}else{
-            		model.addAttribute("loginFail", "Login Fail, User is logined another window!");
-            		returnVal = "login";
-            	}
-        	}else {
-        		model.addAttribute("loginFail", "Logn Fail, password Invalid, try again!");
-        		returnVal = "login";
-        	}
-	
+            if(userForm.getPassword().equals(userLogin.getPassword())){
+                if(userLogin.getIsLogin().equals("0")) {
+                    session.setAttribute("userId", userLogin.getUserId());
+                    //userLogin.setIsLoin("1");
+                    userRepo.save(userLogin);
+                    returnVal = "homePage";
+                }else{
+                    model.addAttribute("loginFail", "Login Fail, User is logined another window!");
+                    returnVal = "login";
+                }
+            }else {
+                model.addAttribute("loginFail", "Logn Fail, password Invalid, try again!");
+                returnVal = "login";
+            }
+    
         }
         return returnVal;
+    }
+    
+    @RequestMapping("/logOut")
+    public String logOut(HttpSession session) {
+        
+        String userId = (String) session.getAttribute("userId");
+        User u = userRepo.findByUserId(userId);
+        u.setIsLoin("0");
+        userRepo.save(u);
+        
+        return "login";
     }
     
     @RequestMapping("/userList")
@@ -85,38 +98,27 @@ public class MainController {
     }
     
     @RequestMapping("/saveCountry")
-    public String saveCountry(Model model,@RequestParam(value="countryId") List<String> listCountryId,
+    public @ResponseBody List<Countries> saveCountry(Model model,@RequestParam(value="countryId") List<String> listCountryId,
             @RequestParam(value="countryName") List<String> listCountryName) {
-        
-        boolean err = false;
+
         for(int i=0; i <listCountryId.size();i++ ) {
-            if(validateService.checkValidatCountry(listCountryId.get(i))) {
-                model.addAttribute("errMsg","Country has country Id is " + "'" +listCountryId.get(i) +"'" + " already exists, try again!");
-                err = true;
-                break;
-            }else {
                 Countries country = new Countries();
                 country.setCountryId(listCountryId.get(i).trim());
                 country.setCountryName(listCountryName.get(i));
                 countryRepo.save(country);
-            }
-            
         }
-        if(!err) {
-            model.addAttribute("msg", "Add Country Success!");
-        }
-        
-        return "redirect:/addCountry";
+        List<Countries> listCountry = (List<Countries>) countryRepo.findAll();
+        return listCountry;
     }
     
     @RequestMapping("/delCountry")
-    public String delCountry(@RequestParam(value="countryId") List<String> listCountryId) {
+    public @ResponseBody List<Countries> delCountry(@RequestParam(value="countryId") List<String> listCountryId) {
             
         for(int i =0; i < listCountryId.size(); i++) {
             countryRepo.delete(listCountryId.get(i));
         }
-            
-        return "redirect:/addCountry";
+        List<Countries> listCountry = (List<Countries>) countryRepo.findAll();
+        return listCountry;
     }
     
     @RequestMapping("/save")
@@ -130,8 +132,8 @@ public class MainController {
             model.addAttribute("userForm", userForm);
             model.addAttribute("addFail", addFail);
         }else {
-        	userForm.setPassword("123456");
-        	userForm.setIsLoin("0");
+            userForm.setPassword("123456");
+            userForm.setIsLoin("0");
             userRepo.save(userForm);
             model.addAttribute("msg", message);
         }

@@ -19,7 +19,6 @@
 	</head>
 	<body>
 		<div class="container" style="width: 30%;">
-
             <h2>Login Form</h2>
             <p>${loginFail}</p>
             <form:form id="formLogin" method = "POST" modelAttribute="userForm" action="${contextPath}/login">

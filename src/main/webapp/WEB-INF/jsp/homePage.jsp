@@ -17,4 +17,5 @@
             <h1>Hello Spring boot CRUD</h1>
         </div>    
     </body>
+    <script src="${contextPath}/resources/js/validate.js"></script>
 </html>

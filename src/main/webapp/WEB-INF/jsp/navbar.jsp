@@ -9,7 +9,7 @@
                 <li class="nav-item"><a class="nav-link" href="${contextPath}/userList">User List</a></li>
                 <li class="nav-item"><a class="nav-link disabled" href="${contextPath}/addUser">Add User</a></li>
                 <li class="nav-item"><a class="nav-link disabled" href="${contextPath}/addCountry">Add Country</a></li>
-                <li style="float:right;" class="nav-item"><a class="nav-link disabled" href="${contextPath}/lougOut">Log Out</a></li>
+                <li style="float:right;" class="nav-item"><a class="nav-link disabled" href="/logOut">Log Out</a></li>
             </ul>
         </div>
     </nav>
